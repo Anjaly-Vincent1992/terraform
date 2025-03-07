@@ -5,8 +5,6 @@ phases:
     commands:
       - echo "Logging into AWS ECR"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 676206934360.dkr.ecr.us-east-1.amazonaws.com
-      - echo "Logging into Docker Hub"
-      - docker login --username AnjalyVincent --password Anjaly@1992
 
   build:
     commands:
@@ -25,4 +23,4 @@ phases:
 artifacts:
   files:
     - "codepipeline/BuildArtif/*"
-  discard-paths: no
+  discard-paths: no  
