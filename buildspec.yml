@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo "Logging into Docker Hub"
-      - docker login -u AnjalyVincent -p Anjaly@1992  
+      - docker login -u anjalyvincnet -p Anjaly@1992  
 
 phases:
   pre_build:
