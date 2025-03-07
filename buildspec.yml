@@ -1,4 +1,7 @@
-build:
+version: 0.2
+
+phases:
+  build:
     commands:
       # Build Docker image
       - echo Building the Docker image...
@@ -14,12 +17,12 @@ build:
 
 artifacts:
   files:
-    - '/*'                    # Include all files in the repository
-    - 'install_dependencies.sh'  # Include install_dependencies.sh script
-    - 'start_docker_container.sh' # Include start_docker_container.sh script
-    - 'stop_docker_container.sh'  # Include stop_docker_container.sh script
+    - '/*'                        # Include all files in the repository
+    - 'install_dependencies.sh'    # Include install_dependencies.sh script
+    - 'start_docker_container.sh'  # Include start_docker_container.sh script
+    - 'stop_docker_container.sh'   # Include stop_docker_container.sh script
   discard-paths: yes  # This removes folder structure in the final artifact (scripts will be at the root level)
 
 cache:
   paths:
-    - '/root/.cache/pip//*'   # Cache pip packages to speed up subsequent builds
+    - '/root/.cache/pip//*'   # Cache pip packages to speed up subsequent builds
