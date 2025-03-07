@@ -3,6 +3,12 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo "Logging into Docker Hub"
+      - docker login -u AnjalyVincent -p Anjaly@1992  
+
+phases:
+  pre_build:
+    commands:
       - echo "Logging into AWS ECR"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 676206934360.dkr.ecr.us-east-1.amazonaws.com
 
