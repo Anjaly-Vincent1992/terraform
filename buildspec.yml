@@ -1,4 +1,7 @@
 version: 0.2
+environment_variables:
+  REPOSITORY_URI: "888577039597.dkr.ecr.us-east-1.amazonaws.com/my-repo"
+  IMAGE_TAG: "v1.0"
 
 phases:
   build:
