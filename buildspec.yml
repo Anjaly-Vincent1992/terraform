@@ -19,11 +19,10 @@ phases:
       - echo "Pushing Docker image to ECR"
       - docker push 676206934360.dkr.ecr.us-east-1.amazonaws.com/anjaly:latest
       - echo "Saving build artifacts"
-      - mkdir -p mypipeline/BuildArtif
-      - echo "Build successful" > mypipeline/BuildArtif/build_info.txt
+      - mkdir -p codepipeline/BuildArtif
+      - echo "Build successful" > codepipeline/BuildArtif/build_info.txt
 
 artifacts:
   files:
-    - "mypipeline/BuildArtif/*"
+    - "codepipeline/BuildArtif/*"
   discard-paths: no
-A
