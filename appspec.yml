@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      # Login to Amazon ECR
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 724772053707.dkr.ecr.us-east-1.amazonaws.com
+
+      # Log in to Docker Hub to avoid rate limits
+      - echo Logging in to Docker Hub...
+      - docker login --
+
+      - REPOSITORY_URI=724772053707.dkr.ecr.us-east-1.amazonaws.com/my-app-repo
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      # Build Docker image
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f Dockerfile .
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+
+  post_build:
+    commands:
+      # Push Docker image to Amazon ECR
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $REPOSITORY_URI:latest
+
+artifacts:
+  files:
+    - '/*'                    # Include all files in the repository
+    - 'install_dependencies.sh'  # Include install_dependencies.sh script
+    - 'start_docker_container.sh' # Include start_docker_container.sh script
+    - 'stop_docker_container.sh'  # Include stop_docker_container.sh script
+  discard-paths: yes  # This removes folder structure in the final artifact (scripts will be at the root level)
+
+cache:
+  paths:
+    - '/root/.cache/pip//*'   # Cache pip packages to speed up subsequent builds
