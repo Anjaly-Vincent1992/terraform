@@ -25,8 +25,9 @@ phases:
       - echo "Saving build artifacts"
       - mkdir -p codepipeline/BuildArtif
       - echo "Build successful" > codepipeline/BuildArtif/build_info.txt
+      - ls -al codepipeline/BuildArtif
 
 artifacts:
   files:
     - "codepipeline/BuildArtif/*"
-  discard-paths: yes  
+  discard-paths: no    
