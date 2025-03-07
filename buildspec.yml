@@ -1,31 +1,26 @@
 version: 0.2
-environment_variables:
-  REPOSITORY_URI: "https://github.com/Anjaly-Vincent1992/terraform.git"
-  IMAGE_TAG: "latest"
 
 phases:
+  pre_build:
+    commands:
+      - echo "Logging into AWS ECR"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 676206934360.dkr.ecr.us-east-1.amazonaws.com
+
   build:
     commands:
-      # Build Docker image
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f Dockerfile .
-      - docker tag https://github.com/Anjaly-Vincent1992/terraform.gi:latest https://github.com/Anjaly-Vincent1992/terraform.gi:latest
+      - echo "Building the Docker image"
+      - docker build -t network .
+      - docker tag network:latest 676206934360.dkr.ecr.us-east-1.amazonaws.com/deploypipeline:latest
 
   post_build:
     commands:
-      # Push Docker image to Amazon ECR
-      - echo Pushing the Docker image to Amazon ECR...
-      - docker push https://github.com/Anjaly-Vincent1992/terraform.gi:latest
-      - docker push https://github.com/Anjaly-Vincent1992/terraform.gi:latest
+      - echo "Pushing Docker image to ECR"
+      - docker push 676206934360.dkr.ecr.us-east-1.amazonaws.com/deploypipeline:latest
+      - echo "Saving build artifacts"
+      - mkdir -p mypipeline/BuildArtif
+      - echo "Build successful" > mypipeline/BuildArtif/build_info.txt
 
 artifacts:
   files:
-    - '/*'                        # Include all files in the repository
-    - 'install_dependencies.sh'    # Include install_dependencies.sh script
-    - 'start_docker_container.sh'  # Include start_docker_container.sh script
-    - 'stop_docker_container.sh'   # Include stop_docker_container.sh script
-  discard-paths: yes  # This removes folder structure in the final artifact (scripts will be at the root level)
-
-cache:
-  paths:
-    - '/root/.cache/pip//*'   # Cache pip packages to speed up subsequent builds
+    - "mypipeline/BuildArtif/*"
+  discard-paths: no
