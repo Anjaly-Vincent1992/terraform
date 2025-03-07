@@ -4,11 +4,7 @@ phases:
   pre_build:
     commands:
       - echo "Logging into Docker Hub"
-      - docker login -u anjalyvincnet -p Anjaly@1992  
-
-phases:
-  pre_build:
-    commands:
+      - docker login -u anjalyvincnet -p Anjaly@1992
       - echo "Logging into AWS ECR"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 676206934360.dkr.ecr.us-east-1.amazonaws.com
 
@@ -25,9 +21,8 @@ phases:
       - echo "Saving build artifacts"
       - mkdir -p codepipeline/BuildArtif
       - echo "Build successful" > codepipeline/BuildArtif/build_info.txt
-      - ls -al codepipeline/BuildArtif
 
 artifacts:
   files:
     - "codepipeline/BuildArtif/*"
-  discard-paths: no    
+  discard-paths: no  
